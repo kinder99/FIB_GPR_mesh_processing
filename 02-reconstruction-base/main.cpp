@@ -102,7 +102,7 @@ int main(int argc, char *argv[])
 		return -1;
 
 	/* Create a windowed mode window and its OpenGL context */
-	window = glfwCreateWindow(VIEWPORT_INIT_WIDTH, VIEWPORT_INIT_HEIGHT, "01 - Normals & ICP", NULL, NULL);
+	window = glfwCreateWindow(VIEWPORT_INIT_WIDTH, VIEWPORT_INIT_HEIGHT, "02 - Reconstruction", NULL, NULL);
 	if (!window)
 	{
 		glfwTerminate();
