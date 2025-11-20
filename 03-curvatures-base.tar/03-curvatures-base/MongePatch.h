@@ -3,6 +3,8 @@
 
 
 #include <vector>
+#include <eigen/Core>
+#include <eigen/Dense>
 #include "glm/glm.hpp"
 
 
@@ -17,6 +19,9 @@ public:
 	
 	void principalCurvatures(float &kmin, float &kmax) const;
 
+	Eigen::VectorXf computeQ(float u, float v, float w) const;
+
+	std::vector<glm::vec3> getNeighbors(){return closest_t;}
 	void setNeighbors(std::vector<glm::vec3> vec){closest_t = vec;}
 
 private:
