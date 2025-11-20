@@ -14,6 +14,11 @@ public:
 	void init(const PointCloud *pointCloud, float standardDeviation, float supportRadius);
 
 	bool operator()(const glm::vec3 &P, float &value) const;
+
+private:
+	const PointCloud *cloud;
+	float std;
+	float supportRadius;
 	
 };
 

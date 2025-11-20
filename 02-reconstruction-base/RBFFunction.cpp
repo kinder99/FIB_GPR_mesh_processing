@@ -7,10 +7,15 @@
 /* Initialize everything to be able to compute the implicit distance to the reconstructed
    point cloud at arbitrary points that are close enough to the point cloud. As should be
    obvious by the name of the class, the distance has to be computed using RBFs.
+   c = std, supportRaduis = 3c
+   use sparse matrix
  */
 
 void RBFFunction::init(const PointCloud *pointCloud, float standardDeviation, float supportRadius)
 {
+	cloud = pointCloud;
+
+
 }
 
 
