@@ -33,7 +33,7 @@ void LaplacianSmoothing::iterativeLaplacian(int nIterations, float lambda)
 		//iterate over all the vertices
 		for(int i = 0; i < vertices.size(); i++){
 			//compute neighbors
-			vector<unsigned int> neighbors;
+			std::vector<unsigned int> neighbors;
 			mesh->getNeighbors(i,neighbors);
 
 			//update vertex positions
@@ -53,6 +53,30 @@ void LaplacianSmoothing::iterativeLaplacian(int nIterations, float lambda)
 
 void LaplacianSmoothing::iterativeBilaplacian(int nIterations, float lambda)
 {
+	std::vector<glm::vec3> vertices = mesh->getVertices();
+	std::vector<glm::vec3> smooth = vertices;
+	//for all iterations
+	for (int curIteration = 0; curIteration < nIterations; curIteration++)
+	{
+		//iterate over all the vertices
+		for(int i = 0; i < vertices.size(); i++){
+			//compute neighbors
+			std::vector<unsigned int> neighbors;
+			mesh->getNeighbors(i,neighbors);
+
+			//update vertex positions
+			glm::vec3 temp;
+			temp = vertices.at(i) + lambda * compute1DLaplacian(vertices, neighbors, vertices.at(i));
+			//then correct using opposite sign
+			smooth.at(i) = temp - lambda * compute1DLaplacian(vertices, neighbors, temp);
+		}
+		//assign new positions
+		vertices = smooth;
+	}
+	//set smoothed vertices into mesh
+	for(int i = 0; i < smooth.size(); i++){
+		mesh->getVertices().at(i) = smooth.at(i);
+	}
 }
 
 /* This method should apply nIterations iterations of Taubin's operator using lambda 
@@ -60,6 +84,32 @@ void LaplacianSmoothing::iterativeBilaplacian(int nIterations, float lambda)
 
 void LaplacianSmoothing::iterativeLambdaNu(int nIterations, float lambda)
 {
+	std::vector<glm::vec3> vertices = mesh->getVertices();
+	std::vector<glm::vec3> smooth = vertices;
+	//compute nu using given formula
+	float nu = lambda/(0.1*lambda-1);
+	//for all iterations
+	for (int curIteration = 0; curIteration < nIterations; curIteration++)
+	{
+		//iterate over all the vertices
+		for(int i = 0; i < vertices.size(); i++){
+			//compute neighbors
+			std::vector<unsigned int> neighbors;
+			mesh->getNeighbors(i,neighbors);
+
+			//update vertex positions
+			glm::vec3 temp;
+			temp = vertices.at(i) + lambda * compute1DLaplacian(vertices, neighbors, vertices.at(i));
+			//then correct using opposite sign
+			smooth.at(i) = temp + nu * compute1DLaplacian(vertices, neighbors, temp);
+		}
+		//assign new positions
+		vertices = smooth;
+	}
+	//set smoothed vertices into mesh
+	for(int i = 0; i < smooth.size(); i++){
+		mesh->getVertices().at(i) = smooth.at(i);
+	}
 }
 
 /* This method should compute new vertices positions by making the laplacian zero, while
@@ -67,6 +117,20 @@ void LaplacianSmoothing::iterativeLambdaNu(int nIterations, float lambda)
 
 void LaplacianSmoothing::globalLaplacian(const vector<bool> &constraints)
 {
+	std::vector<glm::vec3> vertices = mesh->getVertices();
+	Eigen::MatrixXf C(vertices.size(), vertices.size());
+	for(int i = 0; i<vertices.size(); i++){
+		std::vector<unsigned int> neighbors;
+		mesh->getNeighbors(i,neighbors);
+		for(int j = 0; j<vertices.size(); j++){
+			if (i == j){
+				C(i,j) = -neighbors.size();
+			}
+			else {
+				C(i,j) = 1;
+			}
+		}
+	}
 }
 
 /* This method has to optimize the vertices' positions in the least squares sense, 
