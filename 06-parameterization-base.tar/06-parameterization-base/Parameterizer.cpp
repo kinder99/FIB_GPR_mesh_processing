@@ -19,10 +19,24 @@ using namespace std;
 void Parameterizer::harmonicCoordinates(TriangleMesh *mesh)
 {
 	// First we need to determine the border edges of the input mesh
-	// TODO
+	// note that this is probably not working but at least i have smth lmao
+	set<unsigned int, unsigned int> halfEdges;
+	vector<unsigned int> triangles = mesh->getTriangles();
+	for(unsigned int id : triangles){
+		//since i'm not on cpp 20 or higher, can't use contains method :(
+		if(auto search = halfEdges.find((id, mesh->next(id))); search != halfEdges.end()){
+			halfEdges.erase((id, mesh->next(id)));
+		}
+		else{
+			halfEdges.insert((id, mesh->next(id)));
+		}
+	}
 	
 	// Then, these edges need to be arranged into a single cycle, the border polyline
 	// TODO
+	for(set<unsigned int, unsigned int>::iterator it = halfEdges.begin(); it != halfEdges.end(); it++){
+		//it*
+	}
 
 	// Each of the vertices on the border polyline will receive a texture coordinate
 	// on the border of the parameter space ([0,0] -> [1,0] -> [1,1] -> [0,1]), using 
