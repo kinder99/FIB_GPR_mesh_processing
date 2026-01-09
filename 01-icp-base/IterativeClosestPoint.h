@@ -5,7 +5,6 @@
 #include "PointCloud.h"
 #include "NearestNeighbors.h"
 
-
 class IterativeClosestPoint
 {
 
@@ -24,11 +23,8 @@ private:
 
 	std::vector<bool> borderPoints;
 
-    std::vector<int> correspondance;
-    size_t numberOfCorrespondance;
-
-	// std::vector<int> pointCorrespondances;
-	// size_t corrNum;
+    std::vector<int> pointCorrs;
+    size_t corrNumber;
 };
 
 

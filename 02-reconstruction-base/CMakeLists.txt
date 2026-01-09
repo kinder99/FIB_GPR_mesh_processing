@@ -5,7 +5,7 @@ cmake_policy(SET CMP0072 NEW)
 
 project(02-reconstruction-base)
 
-set (CMAKE_CXX_STANDARD 11)
+set (CMAKE_CXX_STANDARD 20)
 
 if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE Release)

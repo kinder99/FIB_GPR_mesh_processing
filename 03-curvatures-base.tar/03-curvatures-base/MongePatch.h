@@ -19,14 +19,9 @@ public:
 	
 	void principalCurvatures(float &kmin, float &kmax) const;
 
-	Eigen::VectorXf computeQ(float u, float v, float w) const;
-
-	std::vector<glm::vec3> getNeighbors(){return closest_t;}
-	void setNeighbors(std::vector<glm::vec3> vec){closest_t = vec;}
-
 private:
 	std::vector<glm::vec3> closest_t;
-	
+	Eigen::Matrix2d H;
 };
 
 

@@ -137,7 +137,6 @@ void DualMarchingCubes::extractVerticesFast(set<NodePosition> &nodes, const Impl
 		printProgressBar(float(i) / size);
 		i++;
 	}
-	
 	cout << endl;
 }
 
